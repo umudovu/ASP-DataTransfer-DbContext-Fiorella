@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP-DataTransfer-DbContext-Fiorella", "ASP-DataTransfer-DbContext-Fiorella\ASP-DataTransfer-DbContext-Fiorella.csproj", "{320298D2-BA63-4EFA-B560-1AAC64ED65AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{320298D2-BA63-4EFA-B560-1AAC64ED65AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320298D2-BA63-4EFA-B560-1AAC64ED65AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320298D2-BA63-4EFA-B560-1AAC64ED65AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320298D2-BA63-4EFA-B560-1AAC64ED65AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B1E6DD30-8A66-41E0-9BC5-FFADD28728F7}
+	EndGlobalSection
+EndGlobal
