@@ -5,12 +5,16 @@ namespace ASP_DataTransfer_DbContext_Fiorella.DataContext
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-
-        public DbSet<Experts> Experts { get; set; }
-        public DbSet<Flower> Flowers { get; set; }
         public DbSet<Slider> Sliders { get; set; }
+        public DbSet<SliderContent> SliderContents { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+
+
     }
 }

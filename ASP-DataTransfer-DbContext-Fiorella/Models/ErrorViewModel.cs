@@ -1,5 +1,3 @@
-using System;
-
 namespace ASP_DataTransfer_DbContext_Fiorella.Models
 {
     public class ErrorViewModel

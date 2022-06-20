@@ -1,5 +1,8 @@
-﻿using ASP_DataTransfer_DbContext_Fiorella.Models;
+﻿using ASP_DataTransfer_DbContext_Fiorella.DataContext;
+using ASP_DataTransfer_DbContext_Fiorella.Models;
+using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,27 +14,37 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext _context;
+        
+        public HomeController(AppDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM homeVM = new HomeVM();
+            homeVM.Sliders = _context.Sliders.ToList();
+            homeVM.SliderContent = _context.SliderContents.FirstOrDefault();
+            homeVM.Categories = _context.Categories.ToList();
+            homeVM.Products=_context.Products.Include(p=>p.Category).ToList();
+            homeVM.Employees= _context.Employees.ToList();
+            homeVM.Blogs = _context.Blogs.ToList();
+
+            return View(homeVM);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Detail(int? id)
         {
-            return View();
+            if (id==null)
+            {
+                return NotFound();
+            }
+            Product dbProduct = _context.Products.Include(p => p.Category).FirstOrDefault();
+            if (dbProduct == null) return NotFound();
+
+            return View(dbProduct);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
