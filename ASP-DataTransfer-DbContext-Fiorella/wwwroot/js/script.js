@@ -66,6 +66,44 @@ $(document).ready(function () {
         }
     })
 
+
+    //Next
+    let skip = 4;
+    let productCount = $("#product-count").val();
+
+    $(document).on('click', '#nextP', function (e) {
+
+        let productsList = $("#products-list");
+
+        axios.get('/product/next?skip=' + skip)
+            .then(function (response) {
+                // handle success
+                let datas = response.request.response;
+                productsList.html(datas);
+
+                if (skip < productCount) {
+                    skip += 4;
+                }
+                console.log(productCount);
+                
+            })
+            .catch(function (error) {   
+                // handle error
+                console.log(error);
+            });
+        
+        
+
+        //$.ajax({
+        //    url: "/product/Next",
+        //    method: "get",
+        //    success: function (res) {
+        //        console.log(res);
+        //    }
+        //})
+    })
+
+
     // ACCORDION 
 
     $(document).on('click', '.question', function()
