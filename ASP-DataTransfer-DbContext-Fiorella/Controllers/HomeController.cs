@@ -3,19 +3,15 @@ using ASP_DataTransfer_DbContext_Fiorella.Models;
 using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 {
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
-        
+
         public HomeController(AppDbContext context)
         {
             _context = context;
@@ -27,8 +23,8 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             homeVM.Sliders = _context.Sliders.ToList();
             homeVM.SliderContent = _context.SliderContents.FirstOrDefault();
             homeVM.Categories = _context.Categories.ToList();
-            homeVM.Products=_context.Products.Include(p=>p.Category).ToList();
-            homeVM.Employees= _context.Employees.ToList();
+            homeVM.Products = _context.Products.Include(p => p.Category).ToList();
+            homeVM.Employees = _context.Employees.ToList();
             homeVM.Blogs = _context.Blogs.ToList();
 
             return View(homeVM);
@@ -36,7 +32,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 
         public IActionResult Detail(int? id)
         {
-            if (id==null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -46,5 +42,17 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             return View(dbProduct);
         }
 
+
+        public IActionResult SerachProduct(string search)
+        {
+            List<Product> products = _context.Products
+                 .Include(p => p.Category)
+                 .OrderBy(p => p.Id)
+                 .Where(p => p.Name.ToLower()
+                 .Contains(search.ToLower()))
+                 .Take(5).ToList();
+
+            return PartialView("_SearchPartial",products);
+        }
     }
 }

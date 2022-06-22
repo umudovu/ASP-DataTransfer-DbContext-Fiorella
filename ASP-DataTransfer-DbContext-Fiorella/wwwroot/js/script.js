@@ -67,25 +67,24 @@ $(document).ready(function () {
     })
 
 
-    //Next
+    //Load More
     let skip = 4;
     let productCount = $("#product-count").val();
 
-    $(document).on('click', '#nextP', function (e) {
+    $(document).on('click', '#loadMore', function (e) {
 
         let productsList = $("#products-list");
 
-        axios.get('/product/next?skip=' + skip)
+        axios.get('/product/LoadMore?skip='+ skip)
             .then(function (response) {
-                // handle success
+
                 let datas = response.request.response;
                 productsList.html(datas);
 
-                if (skip < productCount) {
-                    skip += 4;
+                if (skip>=productCount-4) {
+                    skip = 0;
                 }
-                console.log(productCount);
-                
+                skip += 4;
             })
             .catch(function (error) {   
                 // handle error
@@ -102,6 +101,31 @@ $(document).ready(function () {
         //    }
         //})
     })
+
+    //search
+
+    let searchData = $("#searchDataList");
+
+    $("#input-search").keyup(function () {
+       
+        let value = $(this).val();
+        $("#searchDataList li").slice(1).remove();
+
+        axios.get('/home/SerachProduct?search=' + value)
+            .then(function (response) {
+
+                let datas = response.request.response;
+                searchData.append(datas);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+        
+    });
+
+
+
 
 
     // ACCORDION 
