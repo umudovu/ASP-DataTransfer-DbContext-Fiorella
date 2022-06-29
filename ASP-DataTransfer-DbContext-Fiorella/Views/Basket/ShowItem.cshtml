@@ -1,0 +1,76 @@
+﻿@model  List<BasketVM>
+
+@{
+    ViewData["Title"] = "ShowItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = 0;
+}
+
+
+<div class="container">
+
+  @if (Model.Count()!=0)
+ {
+       <table id="table-p" class="table">
+    <thead>
+        <tr>
+            
+            <th class="col-5 txt-h text-center" scope="col">Product</th>
+            <th class="col-2 txt-h" scope="col">Price</th>
+            <th class="col-2 txt-h" scope="col">Quantity</th>
+            <th class="col-2 txt-h" scope="col">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model)
+            {
+                count++;
+
+                <tr>
+            
+            <td class="d-flex align-items-center">
+                <div class="img ms-3"><img src="~/img/@item.ImgUrl"
+                        style="width: 70px; height: 70px;"></div>
+                <div class="name product-name ms-3 mx-2">@item.Name</div>
+            </td>
+            <td><span class="data-price">$@item.Price</span></td>
+            <td>
+                
+                    <div class="quantity d-flex justify-content-start align-items-center">
+                        <a asp-controller="basket" asp-action="ItemMinus" asp-route-id="@item.Id">
+                          <div class="quantity-button minus-count d-flex justify-content-center align-items-center">
+                        
+                             <i class="fa-solid fa-minus"></i>
+                        
+                          </div>
+                        </a>
+                    <div class="qntty-num">@item.BasketCount</div>
+                     <a asp-controller="basket" asp-action="ItemPlus" asp-route-id="@item.Id">
+                         <div class="quantity-button plus-count d-flex justify-content-center align-items-center">
+                                <i class="fa-solid fa-plus"></i>
+                          </div>
+                     </a>
+                       
+                </div>
+            </td>
+            <td>
+                
+                   <div class="subtotal d-flex justify-content-between align-items-center">
+                        <span class="data-price-total">$@(item.Price*item.BasketCount)</span>
+                               <a asp-controller="basket" asp-action="ItemRemove" asp-route-id="@item.Id">
+                                         <i class="fa-solid fa-xmark remove-data"></i>
+                                </a>
+                   </div>
+               
+            </td>
+        </tr>
+      }
+    </tbody>
+        </table>
+    }
+    else
+    {
+        <a asp-controller="Home" asp-action="index">Go to Home</a>
+    }
+
+</div>

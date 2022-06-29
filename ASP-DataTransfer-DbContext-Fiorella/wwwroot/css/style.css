@@ -798,3 +798,143 @@ footer p {
   opacity: 1 !important;
 }
 /*# sourceMappingURL=style.css.map */
+
+
+
+ .txt-h {
+    font-size: .75rem;
+    font-weight: 600;
+    color: #71778e;
+}
+
+ .table tbody tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    color: #212529;
+}
+
+ .table tbody tr td {
+        font-size: .875rem;
+        vertical-align: middle;
+    }
+
+          .table tbody tr td .name .product-name {
+            text-decoration: none;
+            color: black;
+            font-size: 300;
+            font-size: .875rem;
+        }
+
+          .table tbody tr td .data-price {
+            color: #71778e;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+          .table tbody tr td .quantity .quantity-button {
+            width: 1.875rem;
+            height: 1.875rem;
+            background-color: #edeef5;
+            border-radius: 100%;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+          .table tbody tr td .quantity .qntty-num {
+            margin: 0 10px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+          .table tbody tr td .subtotal .data-price-total {
+            font-size: 1rem;
+            vertical-align: middle;
+            color: #212529;
+            font-weight: 500;
+        }
+
+          .table tbody tr td .subtotal i {
+            cursor: pointer;
+        }
+
+ .card-totals {
+    padding: 20px;
+    border: 1px solid #e3e4e6;
+    border-radius: 8px;
+    margin-left: 30px;
+}
+
+     .card-totals .txt {
+        font-size: .8125rem;
+        font-weight: 600;
+    }
+
+     .card-totals .txt-2 {
+        font-size: .8125rem;
+        font-weight: 400;
+    }
+
+     .card-totals .header {
+        border-bottom: 1px solid #e3e4e6;
+    }
+
+         .card-totals .header h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding-bottom: 0.9375rem;
+            font-family: "Dosis", sans-serif;
+        }
+
+     .card-totals .subtotal-area {
+        padding: 16px 0;
+        border-bottom: 1px solid #e3e4e6;
+    }
+
+         .card-totals .subtotal-area .subtotal,
+         .card-totals .subtotal-area .sub {
+            font-size: .9375rem;
+        }
+
+     .card-totals .shipping-area {
+        padding: 16px 0;
+        border-bottom: 1px solid #e3e4e6;
+    }
+
+         .card-totals .shipping-area .change a {
+            font-size: .825rem;
+            color: #2bbef9;
+        }
+
+             .card-totals .shipping-area .change a:hover {
+                text-decoration: underline;
+                color: #0056b3;
+            }
+
+     .card-totals .totat {
+        padding: 16px 0;
+        border-bottom: 1px solid #e3e4e6;
+    }
+
+         .card-totals .totat .total {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+     .card-totals .checkout {
+        padding-top: 16px;
+    }
+
+         .card-totals .checkout a {
+            color: #fff;
+            font-size: .875rem;
+            font-weight: 500;
+            border: 1px solid;
+            border-radius: 5px;
+            background-color: #ed174a;
+            width: 100%;
+            height: 3.125rem;
+            text-align: center;
+            line-height: 3.1rem;
+        }

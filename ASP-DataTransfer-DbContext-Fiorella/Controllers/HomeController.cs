@@ -30,17 +30,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             return View(homeVM);
         }
 
-        public IActionResult Detail(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            Product dbProduct = _context.Products.Include(p => p.Category).FirstOrDefault();
-            if (dbProduct == null) return NotFound();
-
-            return View(dbProduct);
-        }
+       
 
 
         public IActionResult SerachProduct(string search)

@@ -14,6 +14,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.DataContext
         public DbSet<Product> Products { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Bio> Bios { get; set; }
 
 
     }
