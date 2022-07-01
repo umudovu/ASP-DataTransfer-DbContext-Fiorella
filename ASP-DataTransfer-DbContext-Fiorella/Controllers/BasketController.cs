@@ -44,8 +44,6 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
                 products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
             }
 
-             
-
             BasketVM isexsist = products.Find(p=>p.Id==id);
 
             if (isexsist == null)
@@ -66,9 +64,24 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 
             Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
 
-          
+            double subtotal = 0;
+            int basketCount = 0;
 
-            return RedirectToAction("Index","Home");
+            if (products.Count > 0)
+            {
+                foreach (BasketVM pr in products)
+                {
+                    subtotal += pr.Price * pr.BasketCount;
+                    basketCount += pr.BasketCount;
+                }
+            }
+            var obj = new
+            {
+                SubTotal = subtotal,
+                BasketCount = basketCount
+            };
+
+            return Ok(obj);
         }
 
         public IActionResult ShowItem()
@@ -101,6 +114,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             return View(products);
         }
 
+        [HttpPost]
         public IActionResult ItemPlus(int? id)
         {
             string basket = Request.Cookies["basket"];
@@ -114,35 +128,91 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 
             Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
 
-            return RedirectToAction("ShowItem", "Basket");
+            double subtotal = 0;
+            int basketCount = 0;
+
+            foreach (BasketVM pr in products)
+            {
+                subtotal += pr.Price * product.BasketCount;
+                basketCount += pr.BasketCount;
+            }
+
+            var obj = new
+            {
+                count = product.BasketCount,
+                SubTotal = subtotal,
+                BasketCount = basketCount
+            };
+            return Ok(obj);
         }
 
+        [HttpPost]
         public IActionResult ItemMinus(int? id)
         {
             string basket = Request.Cookies["basket"];
+
+            double subtotal = 0;
+            int basketCount = 0;
+
             List<BasketVM> products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
 
             BasketVM product = products.FirstOrDefault(p => p.Id == id);
+
+            
 
             if (product == null) return NotFound();
 
             if(product.BasketCount>1)
             {
                 product.BasketCount--;
+
                 Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
             }
             else
             {
+
                 List<BasketVM> productsNew = products.FindAll(p=>p.Id!=id);
 
                 Response.Cookies.Append("basket", JsonConvert.SerializeObject(productsNew));
+
+                foreach (BasketVM pr in products)
+                {
+                    subtotal += pr.Price * product.BasketCount;
+                    basketCount += pr.BasketCount;
+                }
+
+                var obje = new
+                {
+                    count = 0,
+                    SubTotal = subtotal,
+                    BasketCount = basketCount
+                };
+
+                return Ok(obje);
             }
 
+
+            
+                foreach (BasketVM pr in products)
+                {
+                    subtotal += pr.Price * product.BasketCount;
+                    basketCount += pr.BasketCount;
+                }
             
 
-            return RedirectToAction("ShowItem", "Basket");
+
+            var obj = new
+            {
+                count = product.BasketCount,
+                SubTotal = subtotal,
+                BasketCount = basketCount
+            };
+
+            return Ok(obj);
         }
 
+
+        [HttpPost]
         public IActionResult ItemRemove(int? id)
         {
             string basket = Request.Cookies["basket"];
@@ -153,9 +223,59 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 
             List<BasketVM> productsNew = products.FindAll(p => p.Id != id);
 
+            BasketVM product = products.FirstOrDefault(p => p.Id == id);
+
             Response.Cookies.Append("basket", JsonConvert.SerializeObject(productsNew));
 
-            return RedirectToAction("ShowItem", "Basket");
+            double subtotal = 0;
+            int basketCount = 0;
+
+            if (products.Count > 0)
+            {
+                foreach (BasketVM pr in products)
+                {
+                    subtotal += pr.Price * product.BasketCount;
+                    basketCount += pr.BasketCount;
+                }
+            }
+
+            var obj = new
+            {
+                SubTotal = subtotal,
+                BasketCount = basketCount
+            };
+            return Ok(obj);
+        }
+
+        [HttpGet]
+        public IActionResult GetBasket(int? id)
+        {
+            string basket = Request.Cookies["basket"];
+            double subtotal = 0;
+            int basketCount = 0;
+
+            List<BasketVM> products = JsonConvert.DeserializeObject<List<BasketVM>>(basket);
+
+            BasketVM product = products.FirstOrDefault(p => p.Id == id);
+
+
+            if (products.Count > 0)
+            {
+                foreach (BasketVM pr in products)
+                {
+                    subtotal += pr.Price * product.BasketCount;
+                    basketCount += pr.BasketCount;
+                }
+            }
+
+            var obj = new
+            {
+                count = product.BasketCount,
+                SubTotal = subtotal,
+                BasketCount = basketCount
+            };
+
+            return Ok(obj);
         }
     }
 }

@@ -37,15 +37,15 @@
             <td>
                 
                     <div class="quantity d-flex justify-content-start align-items-center">
-                        <a asp-controller="basket" asp-action="ItemMinus" asp-route-id="@item.Id">
+                        <a class="item-minus" data-id="@item.Id">
                           <div class="quantity-button minus-count d-flex justify-content-center align-items-center">
                         
                              <i class="fa-solid fa-minus"></i>
                         
                           </div>
                         </a>
-                    <div class="qntty-num">@item.BasketCount</div>
-                     <a asp-controller="basket" asp-action="ItemPlus" asp-route-id="@item.Id">
+                    <div class="qntty-num" id="QuantityPr">@item.BasketCount</div>
+                     <a class="item-plus" data-id="@item.Id">
                          <div class="quantity-button plus-count d-flex justify-content-center align-items-center">
                                 <i class="fa-solid fa-plus"></i>
                           </div>
@@ -57,7 +57,7 @@
                 
                    <div class="subtotal d-flex justify-content-between align-items-center">
                         <span class="data-price-total">$@(item.Price*item.BasketCount)</span>
-                               <a asp-controller="basket" asp-action="ItemRemove" asp-route-id="@item.Id">
+                               <a class="item-remove" data-id="@item.Id">
                                          <i class="fa-solid fa-xmark remove-data"></i>
                                 </a>
                    </div>

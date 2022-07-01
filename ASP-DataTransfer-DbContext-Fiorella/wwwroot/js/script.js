@@ -125,9 +125,100 @@ $(document).ready(function () {
     });
 
 
+    //Add to cart
+
+    let AddCart = $(".addCart");
+
+    AddCart.each(function () {
+        $(this).on("click", function () {
+
+            let dataId = $(this).attr("data-id");
 
 
+            axios.get('/basket/additem?id=' + dataId)
+                .then(function (response) {
+                    $("#HeaderBasketCount").text(response.data.basketCount);
+                    $("#HeaderSubTotal").text(response.data.subTotal);
 
+
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
+
+
+        });
+    });
+
+    //$(".item-minus").each(function () {
+    //    $(this).on("click", function () {
+
+    //        let dataId = $(this).attr("data-id");
+            
+    //       // $(this).prev().text("prev");
+
+    //        axios.post('/basket/itemminus?id=' + dataId)
+    //            .then(function (response) {
+    //                $("#HeaderBasketCount").text(response.data.basketCount);
+    //                $("#HeaderSubTotal").text(response.data.subTotal);
+
+                   
+
+    //                if (response.data.count > 1) {
+
+    //                    $(this).next().text(response.data.count);
+    //                }
+    //                else {
+
+    //                    $(this).parent().parent().parent().remove();
+    //                }
+    //            })
+    //            .catch(function (error) {
+    //                // handle error
+    //                console.log(error);
+    //            });
+
+
+    //    });
+    //});
+
+    //$(".ItemPlus").each(function () {
+    //    $(this).on("click", function () {
+
+    //        let dataId = $(this).attr("data-id");
+
+
+    //        axios.get('/basket/itemminus?id=' + dataId)
+    //            .then(function (response) {
+    //                $("#QuantityPr").text(response.data.count);
+    //                $("#HeaderBasketCount").text(response.data.basketCount);
+    //                $("#HeaderSubTotal").text(response.data.subTotal);
+
+    //            })
+    //            .catch(function (error) {
+    //                // handle error
+    //                console.log(error);
+    //            });
+
+
+    //    });
+    //});
+
+    function GetBasket(id){
+
+        axios.get('/basket/getbasket?id=' + id)
+
+            .then(function (response) {
+                $("#QuantityPr").text(response.data.count);
+                $("#HeaderBasketCount").text(response.data.basketCount);
+                $("#HeaderSubTotal").text(response.data.subTotal);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+    }
     // ACCORDION 
 
     $(document).on('click', '.question', function()
@@ -209,4 +300,107 @@ $(document).ready(function () {
             }
         );
       });
+})
+
+
+let HeaderBasketCount = document.getElementById("HeaderBasketCount");
+let HeaderSubTotal = document.getElementById("HeaderSubTotal");
+
+let minusItem = document.querySelectorAll(".item-minus");
+let plusItem = document.querySelectorAll(".item-plus");
+let removeItem = document.querySelectorAll(".item-remove");
+
+minusItem.forEach(m => {
+
+    
+
+    m.addEventListener("click", function () {
+
+        let dataId = this.getAttribute('data-id');
+        let parentBig = this.parentElement.parentElement.parentElement;
+        let dataCount = this.parentElement.children[1];
+
+
+        axios.post(`/basket/itemminus?id=${dataId}`)
+            .then(function (response) {
+
+                HeaderBasketCount.innerText=response.data.basketCount;
+                HeaderSubTotal.innerText=response.data.subTotal;
+
+              
+                if (response.data.count ==0) {
+
+                    parentBig.remove();
+                    
+                }
+                else {
+                    dataCount.innerText = response.data.count;
+                    
+                }
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+
+    })
+})
+
+
+
+plusItem.forEach(m => {
+
+
+
+    m.addEventListener("click", function () {
+
+        let dataId = this.getAttribute('data-id');
+        let parentBig = this.parentElement.parentElement.parentElement;
+        let dataCount = this.parentElement.children[1];
+
+
+        axios.post(`/basket/itemplus?id=${dataId}`)
+            .then(function (response) {
+
+                HeaderBasketCount.innerText = response.data.basketCount;
+                HeaderSubTotal.innerText = response.data.subTotal;
+
+                dataCount.innerText = response.data.count;
+
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+
+    })
+})
+
+
+removeItem.forEach(m => {
+
+
+
+    m.addEventListener("click", function () {
+
+        let dataId = this.getAttribute('data-id');
+        let parentBig = this.parentElement.parentElement.parentElement;
+        let dataCount = this.parentElement.children[1];
+
+
+        axios.post(`/basket/itemremove?id=${dataId}`)
+            .then(function (response) {
+
+                HeaderBasketCount.innerText = response.data.basketCount;
+                HeaderSubTotal.innerText = response.data.subTotal;
+
+                parentBig.remove();
+
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
+
+    })
 })
