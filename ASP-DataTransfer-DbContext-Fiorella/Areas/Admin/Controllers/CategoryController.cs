@@ -30,10 +30,14 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return RedirectToAction("Error404","Error");
             }
+
             _context.Categories.Add(category);
             _context.SaveChanges();
+
+
+
             return RedirectToAction("index","Category");
         }
 
@@ -44,6 +48,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 
             Category category = _context.Categories.FirstOrDefault(x => x.Id == id);
             if (category == null) return NotFound();
+
             _context.Categories.Remove(category);
             _context.SaveChanges();
 
