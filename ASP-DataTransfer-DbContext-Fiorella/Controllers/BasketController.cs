@@ -166,16 +166,18 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             {
                 product.BasketCount--;
 
-                Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
+                //Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
             }
             else
             {
 
-                List<BasketVM> productsNew = products.FindAll(p=>p.Id!=id);
+                products.Remove(product);
+
+                List<BasketVM> productsNew = products.FindAll(p => p.Id != id);
 
                 Response.Cookies.Append("basket", JsonConvert.SerializeObject(productsNew));
 
-                foreach (BasketVM pr in products)
+                foreach (BasketVM pr in productsNew)
                 {
                     subtotal += pr.Price * product.BasketCount;
                     basketCount += pr.BasketCount;

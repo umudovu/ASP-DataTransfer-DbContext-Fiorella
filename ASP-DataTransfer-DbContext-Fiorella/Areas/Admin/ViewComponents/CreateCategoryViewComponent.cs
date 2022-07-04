@@ -17,7 +17,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            Category category = _context.Categories.FirstOrDefault();
+            Category category = new Category();
 
             return View(await Task.FromResult(category));
         }
