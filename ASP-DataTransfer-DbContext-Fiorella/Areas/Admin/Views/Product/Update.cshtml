@@ -1,0 +1,53 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Update</h1>
+
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+       <div class="col-8">
+            <form asp-action="update" method="post" enctype="multipart/form-data">
+
+            <div class="mb-3">  
+              <label asp-for="Name" class="form-label">Name</label>
+              <input asp-for="Name" class="form-control"  placeholder="Name">
+              <span class="badge bg-warning" asp-validation-for="Name"></span>
+           </div>
+           <div class="mb-3">
+              <label asp-for="Price" class="form-label">Price</label>
+              <input asp-for="Price" class="form-control"  placeholder="Price">
+              <span class="badge bg-warning" asp-validation-for="Price"></span>
+           </div>
+           
+           <div class="mb-3">
+              <label asp-for="Count" class="form-label">Count</label>
+              <input asp-for="Count" class="form-control"  placeholder="Count">
+           </div>
+           <div class="mb-3">
+           <label asp-for="CategoryId" class="form-label">Category Name</label>
+           <select asp-for="CategoryId" asp-items="@ViewBag.Categories" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+              
+           </select>
+           <span class="badge bg-warning" asp-validation-for="Name"></span>
+           </div>
+
+           <div class="mb-3">
+              <label asp-for="Photo" class="form-label"></label>
+              <input asp-for="Photo" class="form-control" accept="image/*">
+              <span class="badge bg-warning" asp-validation-for="Photo"></span>
+           </div>
+
+           <a asp-action="index" class="btn btn-dark">Go Back</a>
+           <button  type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+       </div>
+    </div>
+</div>
+
+
