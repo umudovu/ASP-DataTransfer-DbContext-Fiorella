@@ -1,10 +1,13 @@
 using ASP_DataTransfer_DbContext_Fiorella.DataContext;
+using ASP_DataTransfer_DbContext_Fiorella.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ASP_DataTransfer_DbContext_Fiorella
 {
@@ -20,11 +23,25 @@ namespace ASP_DataTransfer_DbContext_Fiorella
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
 
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
 
-            services.AddControllersWithViews();
+
+            services.AddIdentity<AppUser, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 8;
+                opt.Password.RequireNonAlphanumeric = true;
+                opt.Password.RequireUppercase = true;
+                opt.Password.RequireLowercase = true;
+                opt.Password.RequireDigit = true;
+
+                opt.User.RequireUniqueEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 3;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                opt.Lockout.AllowedForNewUsers=true;
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -43,6 +60,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

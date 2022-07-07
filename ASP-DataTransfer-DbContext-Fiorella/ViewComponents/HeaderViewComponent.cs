@@ -1,6 +1,7 @@
 ﻿using ASP_DataTransfer_DbContext_Fiorella.DataContext;
 using ASP_DataTransfer_DbContext_Fiorella.Models;
 using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -13,10 +14,12 @@ namespace ASP_DataTransfer_DbContext_Fiorella.ViewComponents
     public class HeaderViewComponent: ViewComponent
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HeaderViewComponent(AppDbContext context)
+        public HeaderViewComponent(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int take)
@@ -39,6 +42,14 @@ namespace ASP_DataTransfer_DbContext_Fiorella.ViewComponents
                     basketCount+=product.BasketCount;
                 }
             }
+
+            ViewBag.UserName = "";
+
+            if (User.Identity.IsAuthenticated)
+            {
+              AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                ViewBag.UserName = user.Fullname;
+            }   
 
             ViewBag.SubTotal = subtotal;
 

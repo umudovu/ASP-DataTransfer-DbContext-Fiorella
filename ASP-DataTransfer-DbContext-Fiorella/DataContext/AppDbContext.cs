@@ -1,9 +1,10 @@
 ﻿using ASP_DataTransfer_DbContext_Fiorella.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.DataContext
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
