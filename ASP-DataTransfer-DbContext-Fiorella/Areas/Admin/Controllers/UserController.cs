@@ -25,7 +25,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
             _signInManager = signInManager;
         }
 
-        public async Task<IActionResult> Index(int page=1,int pageSize=3)
+        public async Task<IActionResult> Index(int page=1,int pageSize=10)
         {
             var users =await _userManager.Users.ToListAsync();
 
@@ -33,5 +33,8 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 
             return View(list);
         }
+
+
+       
     }
 }

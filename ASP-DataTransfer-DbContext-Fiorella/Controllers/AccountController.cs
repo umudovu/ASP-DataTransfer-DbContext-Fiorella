@@ -1,8 +1,10 @@
 ﻿using ASP_DataTransfer_DbContext_Fiorella.Models;
 using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
+using Bogus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using static ASP_DataTransfer_DbContext_Fiorella.Helpers.Helper;
@@ -139,6 +141,30 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
                     await _roleManager.CreateAsync(new IdentityRole { Name = item.ToString() });
                 }
             };
+        }
+
+
+        public async Task<ActionResult> CreateUserFake()
+        {
+
+            List<AppUser> _users=new List<AppUser>();
+            
+                _users = new Faker<AppUser>()
+                        .RuleFor(x => x.UserName, f => f.Name.FirstName())
+                        .RuleFor(x => x.Fullname, f => f.Name.FullName())
+                        .RuleFor(x => x.Email, f => f.Person.Email)
+                        .Generate(100);
+            
+
+            foreach (var item in _users)
+            {
+                await _userManager.CreateAsync(item,"Pa$$word123");
+                await _userManager.AddToRoleAsync(item, UserRoles.Member.ToString());
+            }
+
+
+            
+            return RedirectToAction("Index", "Home");
         }
     }
 }
