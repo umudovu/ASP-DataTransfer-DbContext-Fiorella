@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;

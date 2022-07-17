@@ -2,7 +2,10 @@
 using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using static ASP_DataTransfer_DbContext_Fiorella.Helpers.Helper;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
@@ -57,20 +60,23 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
                 return View(registerVM);
             }
 
+            await _userManager.AddToRoleAsync(appUser, UserRoles.Member.ToString());
             return RedirectToAction("Index","Home");
         }
 
 
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM,string ReturnUrl)
         {
             if (!ModelState.IsValid) return View();
+
+            var user = User.FindFirst(ClaimTypes.Name)?.Value;
 
             AppUser appUser= await _userManager.FindByEmailAsync(loginVM.Email);
             if(appUser == null)
@@ -79,7 +85,10 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
                 return View(loginVM);
             }
 
+            
+
             SignInResult result = await _signInManager.PasswordSignInAsync(appUser, loginVM.Password, true, true);
+            
             if (result.IsLockedOut)
             {
                 ModelState.AddModelError("", "Email veya password invalid");
@@ -91,9 +100,25 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
                 return View(loginVM);
             }
 
+            var roles = await _userManager.GetRolesAsync(appUser);
+
+            if (ReturnUrl != null)
+            {
+                foreach (var item in roles)
+                {
+                    if (item == "Admin")
+                    {
+                        return RedirectToAction("Index","dashboard", new {area="Admin"});
+                    }
+                    else
+                    {
+                       return Redirect(ReturnUrl);
+                    }
+                }
+            }
 
 
-            return RedirectToAction("Index", "Home");
+            return BadRequest("Is login xeta");
         }
 
         public async Task<IActionResult> Logout()
@@ -101,6 +126,19 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+
+
+        public async Task CreateRole()
+        {
+            foreach (var item in Enum.GetValues(typeof(UserRoles)))
+            {
+                if (!await _roleManager.RoleExistsAsync(item.ToString()))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole { Name = item.ToString() });
+                }
+            };
         }
     }
 }

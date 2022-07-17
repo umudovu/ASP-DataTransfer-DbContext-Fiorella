@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 {
-   
-    public class DashboardController : BaseController
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class BaseController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+       
     }
 }

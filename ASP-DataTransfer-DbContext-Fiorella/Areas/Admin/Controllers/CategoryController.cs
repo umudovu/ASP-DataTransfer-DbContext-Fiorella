@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ASP_DataTransfer_DbContext_Fiorella.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         private readonly AppDbContext _context;
 
