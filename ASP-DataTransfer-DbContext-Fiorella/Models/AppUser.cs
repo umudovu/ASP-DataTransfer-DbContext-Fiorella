@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Models
@@ -7,5 +9,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Models
     {
         [Required]
         public string  Fullname { get; set; }
+        public DateTime CreateTime { get; set; }
+        public List<Sale> Sales { get; set; }
     }
 }

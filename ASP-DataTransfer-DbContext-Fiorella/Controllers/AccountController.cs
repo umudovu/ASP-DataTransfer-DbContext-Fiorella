@@ -147,9 +147,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
         public async Task<ActionResult> CreateUserFake()
         {
 
-            List<AppUser> _users=new List<AppUser>();
-            
-                _users = new Faker<AppUser>()
+            List<AppUser> _users=  new Faker<AppUser>()
                         .RuleFor(x => x.UserName, f => f.Name.FirstName())
                         .RuleFor(x => x.Fullname, f => f.Name.FullName())
                         .RuleFor(x => x.Email, f => f.Person.Email)

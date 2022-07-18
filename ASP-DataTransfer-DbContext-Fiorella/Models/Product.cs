@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Models
@@ -14,7 +15,8 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Models
         public int Count { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-       
-        
+        public List<SaleProduct> SaleProducts { get; set; }
+
+
     }
 }

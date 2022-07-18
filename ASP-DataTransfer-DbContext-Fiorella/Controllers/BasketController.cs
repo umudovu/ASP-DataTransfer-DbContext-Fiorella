@@ -1,20 +1,25 @@
 ﻿using ASP_DataTransfer_DbContext_Fiorella.DataContext;
 using ASP_DataTransfer_DbContext_Fiorella.Models;
 using ASP_DataTransfer_DbContext_Fiorella.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 {
     public class BasketController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BasketController(AppDbContext context)
+        public BasketController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -166,7 +171,7 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
             {
                 product.BasketCount--;
 
-                //Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
+                Response.Cookies.Append("basket", JsonConvert.SerializeObject(products));
             }
             else
             {
@@ -279,5 +284,45 @@ namespace ASP_DataTransfer_DbContext_Fiorella.Controllers
 
             return Ok(obj);
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Sale()
+        {
+
+            if (!User.Identity.IsAuthenticated) return View("login", "account");
+
+            AppUser user =await _userManager.FindByNameAsync(User.Identity.Name);
+
+            Sale sale = new Sale();
+            sale.SaleDate = DateTime.Now;
+            sale.AppUserId = user.Id;
+
+            List<BasketVM> basketProducts =
+                    JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies["basket"]);
+            List<SaleProduct> saleProducts = new List<SaleProduct>();
+
+            foreach (var item in basketProducts)
+            {
+                Product dbProduct =await _context.Products.FindAsync(item.Id);
+                SaleProduct saleProduct = new SaleProduct();
+                saleProduct.ProductId = item.Id;
+                saleProduct.ProductCount = item.BasketCount;
+                saleProduct.Price=dbProduct.Price;
+                saleProduct.SaleId = sale.Id;
+                saleProducts.Add(saleProduct);
+                sale.Total+=item.BasketCount*dbProduct.Price;
+            }
+            sale.SaleProducts=saleProducts;
+
+            await _context.AddAsync(sale);
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction("ShowItem");
+        }
+
+
     }
 }

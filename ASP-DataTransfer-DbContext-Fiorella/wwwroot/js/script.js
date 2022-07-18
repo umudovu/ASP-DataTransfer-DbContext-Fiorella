@@ -312,14 +312,11 @@ let removeItem = document.querySelectorAll(".item-remove");
 
 minusItem.forEach(m => {
 
-    
-
     m.addEventListener("click", function () {
 
         let dataId = this.getAttribute('data-id');
         let parentBig = this.parentElement.parentElement.parentElement;
         let dataCount = this.parentElement.children[1];
-
 
         axios.post(`/basket/itemminus?id=${dataId}`)
             .then(function (response) {
